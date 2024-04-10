@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Display</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h2 {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        select, input[type="text"] {
+            margin-bottom: 10px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            position: relative;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        td.actions {
+            width: 60px;
+        }
+        td.actions button {
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        td.actions button.edit::before {
+            content: '\270E'; /* Edit icon (pencil) */
+            position: absolute;
+            top: 50%;
+            left: 30%;
+            transform: translate(-50%, -50%);
+            color: blue;
+        }
+        td.actions button.delete::before {
+            content: '\2716'; /* Delete icon (cross) */
+            position: absolute;
+            top: 50%;
+            left: 70%;
+            transform: translate(-50%, -50%);
+            color: red;
+        }
+        .add-task-container {
+            margin-top: 20px;
+        }
+        .add-task-container input[type="text"] {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .add-task-container button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .add-task-container button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Task List</h2>
+
+    <div>
+        <label for="categoryFilter">Filter by Category:</label>
+        <select id="categoryFilter">
+            <option value="">All</option>
+            <option value="work">Work</option>
+            <option value="personal work">Personal Work</option>
+            <option value="Personal Space">Personal Space</option>
+        </select>
+    </div>
+
+    <div>
+        <label for="durationFilter">Filter by Duration:</label>
+        <input type="text" id="durationFilter" placeholder="e.g., 01:30:00">
+    </div>
+
+    <table id="taskTable">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Sub Category</th>
+                <th>Duration</th>
+                <th>Task</th>
+                <th class="actions">Actions</th>
+            </tr>
+        </thead>
+        <tbody id="taskBody">
+        </tbody>
+    </table>
+
+    <div class="add-task-container">
+        <h3>Add New Task</h3>
+        <div>
+            <label for="categoryInput">Category:</label>
+            <input type="text" id="categoryInput">
+        </div>
+        <div>
+            <label for="subCategoryInput">Sub Category:</label>
+            <input type="text" id="subCategoryInput">
+        </div>
+        <div>
+            <label for="durationInput">Duration:</label>
+            <input type="text" id="durationInput" placeholder="e.g., 01:30:00">
+        </div>
+        <div>
+            <label for="taskInput">Task:</label>
+            <input type="text" id="taskInput">
+        </div>
+        <button onclick="addTask()">Add Task</button>
+    </div>
+
+    <script>
+        let tasks = [
+            {
+                category: "work",
+                sub_category: "meeting",
+                duration: "00:40:21",
+                task: "client meeting"
+            },
+            {
+                category: "personal work",
+                sub_category: "-",
+                duration: "00:26:22",
+                task: "-"
+            },
+            {
+                category: "work",
+                sub_category: "project",
+                duration: "01:32:01",
+                task: "Mail Handler module"
+            },
+            {
+                category: "work",
+                sub_category: "Meeting",
+                duration: "00:35:05",
+                task: "Daily scrum"
+            },
+            {
+                category: "Personal Space",
+                sub_category: "-",
+                duration: "00:16:37",
+                task: "-"
+            },
+            {
+                category: "work",
+                sub_category: "project",
+                duration: "00:42:13",
+                task: "Documentation"
+            }
+        ];
+
+        const tableBody = document.getElementById('taskBody');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const durationFilter = document.getElementById('durationFilter');
+
+        function displayTasks() {
+            tableBody.innerHTML = '';
+            const filteredTasks = tasks.filter(task => {
+                const categoryMatch = !categoryFilter.value || task.category === categoryFilter.value;
+                const durationMatch = !durationFilter.value || task.duration.includes(durationFilter.value);
+                return categoryMatch && durationMatch;
+            });
+            filteredTasks.forEach((task, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${task.category}</td>
+                    <td>${task.sub_category}</td>
+                    <td>${task.duration}</td>
+                    <td>${task.task}</td>
+                    <td class="actions">
+                        <button class="edit" onclick="editTask(${index})"></button>
+                        <button class="delete" onclick="deleteTask(${index})"></button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function addTask() {
+            const categoryInput = document.getElementById('categoryInput').value;
+            const subCategoryInput = document.getElementById('subCategoryInput').value;
+            const durationInput = document.getElementById('durationInput').value;
+            const taskInput = document.getElementById('taskInput').value;
+
+            const newTask = {
+                category: categoryInput,
+                sub_category: subCategoryInput,
+                duration: durationInput,
+                task: taskInput
+            };
+
+            tasks.push(newTask);
+            displayTasks();
+        }
+
+        function editTask(index) {
+            
+            console.log('Edit task at index:', index);
+        }
+
+        function deleteTask(index) {
+            
+            tasks.splice(index, 1);
+            displayTasks();
+        }
+
+        displayTasks();
+
+        categoryFilter.addEventListener('change', displayTasks);
+        durationFilter.addEventListener('input', displayTasks);
+    </script>
+</body>
+</html>

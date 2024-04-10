@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login & Sign Up</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    form {
+      background: #fff;
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      box-sizing: border-box;
+    }
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+<form id="loginForm" style="display: block;">
+  <h2>Login</h2>
+  <div id="loginError" class="error" style="display: none;"></div>
+  <label for="username">Email Address:</label>
+  <input type="text" id="username" name="username" required>
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" required>
+  <input type="submit" value="Login">
+  <p>Don't have an account? <a href="#" onclick="toggleForm()">Sign up</a></p>
+</form>
+
+<form id="signupForm" style="display: none;">
+  <h2>Sign Up</h2>
+  <div id="signupError" class="error" style="display: none;"></div>
+  <label for="newUsername">Username:</label>
+  <input type="text" id="newUsername" name="newUsername" required>
+  <label for="newUsername">Email Address:</label>
+  <input type="text" id="newUsername" name="newUsername" required>
+  <label for="newPassword">Password:</label>
+  <input type="password" id="newPassword" name="newPassword" required>
+  <input type="submit" value="Sign Up">
+  <p>Already have an account? <a href="mern2.html" onclick="toggleForm()">Login</a></p>
+</form>
+
+<script>
+  function toggleForm() {
+    var loginForm = document.getElementById('loginForm');
+    var signupForm = document.getElementById('signupForm');
+    
+    if (loginForm.style.display === "none") {
+      loginForm.style.display = "block";
+      signupForm.style.display = "none";
+    } else {
+      loginForm.style.display = "none";
+      signupForm.style.display = "block";
+    }
+  }
+  
+  document.getElementById('loginForm').onsubmit = function(event) {
+    event.preventDefault();
+    
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+    
+    // Here you should perform validation and authentication
+    // For the sake of simplicity, we'll just display an error if the fields are empty
+    if (!username || !password) {
+      document.getElementById('loginError').innerText = "Please enter both username and password";
+      document.getElementById('loginError').style.display = "block";
+      return;
+    }
+    
+    // If validation passes, you can proceed with your authentication logic
+    // For example, you can use AJAX to send the data to the server and verify the user credentials
+    // If authentication is successful, you can redirect the user to another page
+    // For demonstration purposes, we're just logging to console here
+    console.log("Logging in with username: " + username + " and password: " + password);
+  };
+  
+  document.getElementById('signupForm').onsubmit = function(event) {
+    event.preventDefault();
+    
+    var newUsername = document.getElementById('newUsername').value;
+    var newPassword = document.getElementById('newPassword').value;
+    
+    // Here you should perform validation and registration logic
+    // For the sake of simplicity, we'll just display an error if the fields are empty
+    if (!newUsername || !newPassword) {
+      document.getElementById('signupError').innerText = "Please enter both username and password";
+      document.getElementById('signupError').style.display = "block";
+      return;
+    }
+    
+    // If validation passes, you can proceed with your registration logic
+    // For example, you can use AJAX to send the data to the server and create a new user account
+    // If registration is successful, you can show a success message or redirect the user
+    // For demonstration purposes, we're just logging to console here
+    console.log("Signing up with username: " + newUsername + " and password: " + newPassword);
+  };
+</script>
+
+</body>
+</html>
